@@ -1,9 +1,6 @@
 <template>
   <div v-if="mergeConfig.enumSource">
-    <b-form-group
-      v-slot="{ ariaDescribedby }"
-      :class="mergeConfig.class"
-    >
+    <b-form-group v-slot="{ ariaDescribedby }" :class="mergeConfig.class">
       <b-form-checkbox-group
         :disabled="disabled"
         :readonly="readonly"
@@ -40,7 +37,6 @@ export default {
     return {
       inputVal: "",
       defaultConfig: {
-        class: "",
         size: "md",
         name: "",
         stacked: false

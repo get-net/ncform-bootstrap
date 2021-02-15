@@ -26,7 +26,6 @@ export default {
     return {
       inputVal: [],
       defaultConfig: {
-        class: "",
         clearable: true,
         pattern: "",
         rows: 4,

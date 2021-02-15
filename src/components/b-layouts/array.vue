@@ -13,99 +13,108 @@
           v-for="(dataItem, idx) in schema.value"
           :key="dataItem.__dataSchema.__id"
         >
-            <label
-                v-b-toggle="'collapse-' + (mergeConfig.autoIdxToLabel ? idx + 1 : '') + dataItem.__dataSchema.__id"
-            >
-                {{ _analyzeVal(dataItem.__dataSchema.ui.label, idx) }}
-                <!-- {{ mergeConfig.autoIdxToLabel ? idx + 1 : "" }} -->
-                 {{idx + 1}}
-            </label>
-            <b-collapse visible :id="'collapse-' + (mergeConfig.autoIdxToLabel ? idx + 1 : '') + dataItem.__dataSchema.__id">
-                 <b-card class="mt-1">
-            <div class="btn-group btn-group-sm">
-              <button
-                @click="itemUp(idx)"
-                v-show="idx !== 0"
-                v-if="!mergeConfig.disableReorder"
-                type="button"
-                class="btn btn-secondary"
-              >
-                {{ $nclang("up") }}
-              </button>
-              <button
-                @click="itemDown(idx)"
-                v-show="idx !== schema.value.length - 1"
-                v-if="!mergeConfig.disableReorder"
-                type="button"
-                class="btn btn-secondary"
-              >
-                {{ $nclang("down") }}
-              </button>
-              <button
-                @click="
-                  delItem(
-                    idx,
-                    mergeConfig.requiredDelConfirm,
-                    mergeConfig.delConfirmText.item || $nclang('delItemTips')
-                  )
-                "
-                v-if="
-                  (!mergeConfig.disableDel &&
-                    !isDelExceptionRow(dataItem.__dataSchema)) ||
-                    (mergeConfig.disableDel &&
-                      isDelExceptionRow(dataItem.__dataSchema))
-                "
-                type="button"
-                class="btn btn-danger btn-secondary"
-              >
-                {{ $nclang("delete") }}
-              </button>
-            </div>
+          <label
+            v-b-toggle="
+              'collapse-' +
+                (mergeConfig.autoIdxToLabel ? idx + 1 : '') +
+                dataItem.__dataSchema.__id
+            "
+          >
+            {{ _analyzeVal(dataItem.__dataSchema.ui.label, idx) }}
+            <!-- {{ mergeConfig.autoIdxToLabel ? idx + 1 : "" }} -->
+            {{ idx + 1 }}
+          </label>
+          <b-collapse
+            visible
+            :id="
+              'collapse-' +
+                (mergeConfig.autoIdxToLabel ? idx + 1 : '') +
+                dataItem.__dataSchema.__id
+            "
+          >
+            <b-card class="mt-1">
+              <div class="btn-group btn-group-sm">
+                <button
+                  @click="itemUp(idx)"
+                  v-show="idx !== 0"
+                  v-if="!mergeConfig.disableReorder"
+                  type="button"
+                  class="btn btn-secondary"
+                >
+                  {{ $nclang("up") }}
+                </button>
+                <button
+                  @click="itemDown(idx)"
+                  v-show="idx !== schema.value.length - 1"
+                  v-if="!mergeConfig.disableReorder"
+                  type="button"
+                  class="btn btn-secondary"
+                >
+                  {{ $nclang("down") }}
+                </button>
+                <button
+                  @click="
+                    delItem(
+                      idx,
+                      mergeConfig.requiredDelConfirm,
+                      mergeConfig.delConfirmText.item || $nclang('delItemTips')
+                    )
+                  "
+                  v-if="
+                    (!mergeConfig.disableDel &&
+                      !isDelExceptionRow(dataItem.__dataSchema)) ||
+                      (mergeConfig.disableDel &&
+                        isDelExceptionRow(dataItem.__dataSchema))
+                  "
+                  type="button"
+                  class="btn btn-danger btn-secondary"
+                >
+                  {{ $nclang("delete") }}
+                </button>
+              </div>
 
-            <template v-if="isNormalObjSchema(dataItem.__dataSchema)">
-              <ncform-object
-                v-show="
-                  mergeConfig.disableItemCollapse ||
-                    dataItem.__dataSchema._expand
-                "
-                :schema="dataItem.__dataSchema"
-                :form-data="formData"
-                :idx-chain="(idxChain ? idxChain + ',' : '') + idx"
-                :config="dataItem.__dataSchema.ui.widgetConfig"
-                :global-const="globalConst"
-                :show-legend="false"
-              >
+              <template v-if="isNormalObjSchema(dataItem.__dataSchema)">
+                <ncform-object
+                  v-show="
+                    mergeConfig.disableItemCollapse ||
+                      dataItem.__dataSchema._expand
+                  "
+                  :schema="dataItem.__dataSchema"
+                  :form-data="formData"
+                  :idx-chain="(idxChain ? idxChain + ',' : '') + idx"
+                  :config="dataItem.__dataSchema.ui.widgetConfig"
+                  :global-const="globalConst"
+                  :show-legend="false"
+                >
+                  <template
+                    v-for="(fieldSchema, fieldName) in dataItem.__dataSchema
+                      .properties || { __notObjItem: dataItem.__dataSchema }"
+                    :slot="fieldName"
+                  >
+                    <slot
+                      :name="fieldName"
+                      :schema="fieldSchema"
+                      :idx="idx"
+                    ></slot>
+                  </template>
+                </ncform-object>
+              </template>
 
-                <template
-                  v-for="(fieldSchema, fieldName) in dataItem.__dataSchema
-                    .properties || { __notObjItem: dataItem.__dataSchema }"
-                  :slot="fieldName"
+              <template v-else>
+                <div
+                  v-show="
+                    mergeConfig.disableItemCollapse ||
+                      dataItem.__dataSchema._expand
+                  "
                 >
                   <slot
-                    :name="fieldName"
-                    :schema="fieldSchema"
+                    name="__notObjItem"
+                    :schema="dataItem.__dataSchema"
                     :idx="idx"
                   ></slot>
-                </template>
-              </ncform-object>
-            </template>
-
-            <template v-else>
-              <div
-                v-show="
-                  mergeConfig.disableItemCollapse ||
-                    dataItem.__dataSchema._expand
-                "
-              >
-                <slot
-                  name="__notObjItem"
-                  :schema="dataItem.__dataSchema"
-                  :idx="idx"
-                ></slot>
-
-              </div>
-            </template>
-          </b-card>
+                </div>
+              </template>
+            </b-card>
           </b-collapse>
         </div>
       </b-card>
@@ -208,8 +217,12 @@ export default {
       }
     },
     isDelExceptionRow(schema) {
-      return this.mergeConfig.delExceptionRows ? this.mergeConfig.delExceptionRows(ncformUtils.getModelFromSchema(schema)) : false;
-    },
+      return this.mergeConfig.delExceptionRows
+        ? this.mergeConfig.delExceptionRows(
+            ncformUtils.getModelFromSchema(schema)
+          )
+        : false;
+    }
   },
 
   watch: {

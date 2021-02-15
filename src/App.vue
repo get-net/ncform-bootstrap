@@ -32,7 +32,7 @@ export default {
                 size: "md",
                 appendIcon: "arrow-up",
                 prependIcon: null,
-                showState: true
+                showState: true, // flag indicates whether to show validation state in componentб
               }
             },
             rules: {
@@ -111,8 +111,8 @@ export default {
             },
             rules: {
               required: {
-                value: true, // The value passed to the validation rule
-                errMsg: "yep it is required!" // Error message
+                value: true,
+                errMsg: "yep it is required!" 
               }
             },
             value: new Date().toISOString()
@@ -121,6 +121,7 @@ export default {
             type: "string",
             ui: {
               columns: 3,
+              itemClass: "",
               label: "select",
               placeholder: "date",
               widget: "select",
@@ -163,7 +164,7 @@ export default {
               widgetConfig: {
                 name: "manyrad",
                 stacked: true,
-                enumSource: [
+                options: [
                   {
                     value: 1,
                     text: "orange"
@@ -183,6 +184,7 @@ export default {
           checkbox: {
             type: "array",
             ui: {
+              itemClass: "",
               columns: 3
             },
             items: {
@@ -220,8 +222,6 @@ export default {
           }
         },
         value: {},
-        widgetConfig: {
-        }
       }
     };
   },

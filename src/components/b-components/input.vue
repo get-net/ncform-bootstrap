@@ -47,7 +47,7 @@ export default {
         size: "md",
         pattern: null,
         state: null
-      }
+      },
     };
   },
   methods: {

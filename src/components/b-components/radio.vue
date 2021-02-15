@@ -1,14 +1,14 @@
 <template>
   <div>
     <b-form-group v-slot="{ ariaDescribedby }" :class="mergeConfig.class">
-      <div v-if="mergeConfig.enumSource">
+      <div v-if="mergeConfig.options">
         <b-form-radio-group
           :disabled="disabled"
           :readonly="readonly"
           :placeholder="placeholder"
           :hidden="hidden"
           v-model="modelVal"
-          :options="mergeConfig.enumSource"
+          :options="mergeConfig.options"
           :aria-describedby="ariaDescribedby"
           :name="mergeConfig.name"
           :size="mergeConfig.size"
@@ -23,7 +23,6 @@
           :hidden="hidden"
           v-model="modelVal"
           :aria-describedby="ariaDescribedby"
-          name="some-radios"
           :value="true"
           :size="mergeConfig.size"
           >{{ $nclang("yes") }}</b-form-radio
@@ -35,7 +34,6 @@
           :hidden="hidden"
           v-model="modelVal"
           :aria-describedby="ariaDescribedby"
-          name="some-radios"
           :value="false"
           :size="mergeConfig.size"
           >{{ $nclang("no") }}</b-form-radio
@@ -63,9 +61,8 @@ export default {
     return {
       selected: "",
       defaultConfig: {
-        class: "",
         size: "md",
-        enumSource: null,
+        options: null,
         name: "radios",
         stacked: false
       }

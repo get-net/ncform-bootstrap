@@ -23,7 +23,6 @@ export default {
     return {
       inputVal: [],
       defaultConfig: {
-        class: "",
         options: "",
         mutiple: "",
         select_size: 1,

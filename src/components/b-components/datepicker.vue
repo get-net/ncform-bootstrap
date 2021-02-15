@@ -30,7 +30,6 @@ export default {
     return {
       inputVal: "",
       defaultConfig: {
-        class: "",
         size: "md",
         locale: "en",
         min: null,
