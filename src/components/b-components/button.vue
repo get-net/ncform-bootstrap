@@ -33,7 +33,7 @@ export default {
   },
   methods: {
       onClickHandler() {
-        //   console.log(this.mergeConfig.onBtnClick())
+        this.mergeConfig.btnActions.click()
       }
   },
 };

@@ -12,6 +12,7 @@
     :min="mergeConfig.min"
     :max="mergeConfig.max"
     :state="mergeConfig.state"
+    :date-format-options="mergeConfig.date_format_options"
   ></b-form-datepicker>
 </template>
 
@@ -34,7 +35,8 @@ export default {
         locale: "en",
         min: null,
         max: null,
-        state: null
+        state: null,
+        date_format_options: null
       }
     };
   },

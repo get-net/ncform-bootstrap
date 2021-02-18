@@ -106,6 +106,7 @@ export default {
               widget: "datepicker",
               widgetConfig: {
                 showState: true,
+                date_format_options: {day: 'numeric', month: 'numeric', year: 'numeric'},
                 min: new Date()
               }
             },
@@ -221,7 +222,7 @@ export default {
             }
           }
         },
-        value: {},
+        value: {}
       }
     };
   },
