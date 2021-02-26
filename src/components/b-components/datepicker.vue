@@ -1,19 +1,22 @@
 <template>
-  <b-form-datepicker
-    :disabled="disabled"
-    :readonly="readonly"
-    :placeholder="placeholder"
-    :hidden="hidden"
-    v-model="modelVal"
-    :class="mergeConfig.class"
-    :size="mergeConfig.size"
-    @input="onInput"
-    :locale="mergeConfig.locale"
-    :min="mergeConfig.min"
-    :max="mergeConfig.max"
-    :state="mergeConfig.state"
-    :date-format-options="mergeConfig.date_format_options"
-  ></b-form-datepicker>
+  <div>
+    <b-form-datepicker
+      :disabled="disabled"
+      :readonly="readonly"
+      :placeholder="placeholder"
+      :hidden="hidden"
+      v-model="modelVal"
+      :class="mergeConfig.class"
+      :size="mergeConfig.size"
+      @input="onInput"
+      :locale="mergeConfig.locale"
+      :min="mergeConfig.min"
+      :max="mergeConfig.max"
+      :state="mergeConfig.state"
+      :date-format-options="mergeConfig.date_format_options"
+    ></b-form-datepicker>
+  </div>
+ 
 </template>
 
 <script>

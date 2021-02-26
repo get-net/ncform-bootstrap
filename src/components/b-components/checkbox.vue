@@ -1,12 +1,12 @@
 <template>
-  <div v-if="mergeConfig.enumSource">
+  <div v-if="mergeConfig.options">
     <b-form-group v-slot="{ ariaDescribedby }" :class="mergeConfig.class">
       <b-form-checkbox-group
         :disabled="disabled"
         :readonly="readonly"
         :placeholder="placeholder"
         v-model="modelVal"
-        :options="mergeConfig.enumSource"
+        :options="mergeConfig.options"
         :aria-describedby="ariaDescribedby"
         :name="mergeConfig.name"
         :size="mergeConfig.size"

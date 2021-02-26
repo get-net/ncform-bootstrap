@@ -6,6 +6,12 @@
       v-model="formSchema.value"
       @submit="submit()"
     ></ncform>
+    <ncform
+      :form-schema="formSchema"
+      form-name="your-form-name-2"
+      v-model="formSchema.value"
+      @submit="submit()"
+    ></ncform>
     <hr />
     <b-button @click="submit()">Submit</b-button>
   </div>
@@ -102,12 +108,13 @@ export default {
             ui: {
               columns: 3,
               label: "datepicker",
-              placeholder: "date",
+              placeholder: "dd-mm-yyyy",
               widget: "datepicker",
               widgetConfig: {
                 showState: true,
                 date_format_options: {day: 'numeric', month: 'numeric', year: 'numeric'},
-                min: new Date()
+                min: new Date(),
+                manual: true,
               }
             },
             rules: {
@@ -204,7 +211,7 @@ export default {
               widget: "checkbox",
               widgetConfig: {
                 name: "manycheck",
-                enumSource: [
+                options: [
                   {
                     value: 1,
                     text: "orange"
@@ -222,7 +229,8 @@ export default {
             }
           }
         },
-        value: {}
+        value: {},
+        
       }
     };
   },
