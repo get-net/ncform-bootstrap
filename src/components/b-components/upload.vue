@@ -14,7 +14,11 @@
       :state="mergeConfig.state"
       :accept="mergeConfig.accept"
       @input="handleInput"
+      @change="handleChange"
     ></b-form-file>
+    <b-card v-if="mergeConfig.preview && imageHasSrc">
+      <img id="output" style="max-width:100%" />
+    </b-card>
   </div>
 </template>
 
@@ -25,12 +29,11 @@ export default {
   mixins: [ncformCommon.mixins.vue.controlMixin, validateStateMixin],
   i18nData: {
     en: {
-      browse: 'Browse',
+      browse: "Browse"
     },
-    zh_cn: {
-    },
+    zh_cn: {},
     ru: {
-      browse: 'Выбрать',
+      browse: "Выбрать"
     }
   },
   props: {
@@ -38,6 +41,17 @@ export default {
       type: Array,
       default() {
         return [];
+      }
+    }
+  },
+  watch: {
+    modelVal(val) {
+      if (val) {
+        let output = document.getElementById("output");
+        output.src = URL.createObjectURL(val[0]);
+        output.onload = function() {
+          URL.revokeObjectURL(output.src);
+        };
       }
     }
   },
@@ -50,8 +64,10 @@ export default {
         multiple: false,
         size: "md",
         state: null,
-        accept: "*"
-      }
+        accept: "*",
+        preview: false
+      },
+      imageHasSrc: false
     };
   },
   methods: {
@@ -62,6 +78,14 @@ export default {
           this.modelVal = this.modelVal.pop();
         }
       }
+    },
+    handleChange(val) {
+      let output = document.getElementById("output");
+      this.imageHasSrc = true;
+      output.src = URL.createObjectURL(val.target.files[0]);
+      output.onload = function() {
+        URL.revokeObjectURL(output.src);
+      };
     }
   }
 };

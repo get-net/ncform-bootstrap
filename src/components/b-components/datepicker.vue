@@ -1,26 +1,56 @@
 <template>
   <div>
-    <b-form-datepicker
-      :disabled="disabled"
-      :readonly="readonly"
-      :placeholder="placeholder"
-      :hidden="hidden"
-      v-model="modelVal"
-      :class="mergeConfig.class"
-      :size="mergeConfig.size"
-      @input="onInput"
-      :locale="mergeConfig.locale"
-      :min="mergeConfig.min"
-      :max="mergeConfig.max"
-      :state="mergeConfig.state"
-      :date-format-options="mergeConfig.date_format_options"
-    ></b-form-datepicker>
+    <div v-if="mergeConfig.allowInput">
+      <b-input-group :class="mergeConfig.class" :size="mergeConfig.size">
+        <b-form-input
+          :disabled="disabled"
+          :readonly="readonly"
+          :hidden="hidden"
+          :placeholder="placeholder"
+          v-model="inputVal"
+          autocomplete="off"
+          :state="mergeConfig.state"
+          @input="onInput"
+        ></b-form-input>
+        <b-input-group-append>
+          <b-form-datepicker
+            v-model="modelVal"
+            button-only
+            right
+            :disabled="disabled"
+            :readonly="readonly"
+            :hidden="hidden"
+            :locale="mergeConfig.locale"
+            :min="mergeConfig.min"
+            :max="mergeConfig.max"
+            :state="mergeConfig.state"
+            @context="onContext"
+          ></b-form-datepicker>
+        </b-input-group-append>
+      </b-input-group>
+    </div>
+    <div v-else>
+      <b-form-datepicker
+        :disabled="disabled"
+        :readonly="readonly"
+        :placeholder="placeholder"
+        :hidden="hidden"
+        v-model="modelVal"
+        :class="mergeConfig.class"
+        :size="mergeConfig.size"
+        :locale="mergeConfig.locale"
+        :min="mergeConfig.min"
+        :max="mergeConfig.max"
+        :state="mergeConfig.state"
+      ></b-form-datepicker>
+    </div>
   </div>
 </template>
 
 <script>
 import ncformCommon from "@ncform/ncform-common";
 import validateStateMixin from "@/mixins/validateStateMixin";
+import moment from "moment";
 export default {
   mixins: [ncformCommon.mixins.vue.controlMixin, validateStateMixin],
   props: {
@@ -38,12 +68,15 @@ export default {
         min: null,
         max: null,
         state: null,
-        date_format_options: null
+        date_format_options: null,
+        format: "YYYY-MM-DD",
+        allowInput: false
       }
     };
   },
   methods: {
     _processModelVal(newVal) {
+      console.log(this.mergeConfig.valueFormat);
       return `${
         newVal
           ? this.mergeConfig.valueFormat
@@ -52,7 +85,25 @@ export default {
           : ""
       }`;
     },
-    onInput() {}
+
+    onContext(ctx) {
+      if (ctx.selectedDate) {
+        let m = moment(ctx.selectedDate);
+        this.inputVal = m.format(this.mergeConfig.format);
+      }
+    },
+
+    onInput() {
+      if (this.inputVal.length === 10) {
+        let m = moment(this.inputVal, this.mergeConfig.format);
+        if (
+          m.toDate() > this.mergeConfig.min ||
+          m.toDate() < this.mergeConfig.max
+        ) {
+          this.modelVal = m.toDate();
+        }
+      }
+    }
   },
   mounted() {
     this.defaultConfig.locale = window.__$ncform.lang;

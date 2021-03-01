@@ -96,7 +96,10 @@ For now widget contains 7 bootstrap components
     locale: "en",
     min: null,
     max: null,
-    state: null
+    state: null,
+    date_format_options: null,
+    format: "YYYY-MM-DD",
+    allowInput: false
   }
 ```
 
@@ -203,7 +206,9 @@ formSchema: {
               widget: "datepicker",
               widgetConfig: {
                 showState: true,
-                min: new Date()
+                min: new Date(),
+                format: "DD.MM.YYYY",
+                allowInput: true,
               }
             },
             rules: {
@@ -314,6 +319,15 @@ formSchema: {
                     text: "blue"
                   }
                 ]
+              }
+            }
+          },
+          btn: {
+            ui: {
+              columns: 3,
+              widget: "button",
+              widgetConfig: {
+                btnClickAction: "dx: () => console.log('btn action')"
               }
             }
           }
