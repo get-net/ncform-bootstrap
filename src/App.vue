@@ -227,10 +227,18 @@ export default {
                 ]
               }
             }
+          },
+          btn: {
+            ui: {
+              columns: 3,
+              widget: "button",
+              widgetConfig: {
+                btnClickAction: "dx: () => console.log('btn action')"
+              }
+            }
           }
         },
-        value: {},
-        
+        value: {}
       }
     };
   },

@@ -16,7 +16,6 @@
       :date-format-options="mergeConfig.date_format_options"
     ></b-form-datepicker>
   </div>
- 
 </template>
 
 <script>

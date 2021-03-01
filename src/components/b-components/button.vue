@@ -27,15 +27,16 @@ export default {
         label: "click",
         variant: "primary",
         block: false,
-        title: "btn"
+        title: "btn",
+        btnClickAction: ""
       }
     };
   },
   methods: {
-      onClickHandler() {
-        this.mergeConfig.btnActions.click()
-      }
-  },
+    onClickHandler() {
+      this.mergeConfig.btnClickAction();
+    }
+  }
 };
 </script>
 

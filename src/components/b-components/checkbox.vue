@@ -1,18 +1,15 @@
 <template>
   <div v-if="mergeConfig.options">
-    <b-form-group v-slot="{ ariaDescribedby }" :class="mergeConfig.class">
       <b-form-checkbox-group
         :disabled="disabled"
         :readonly="readonly"
         :placeholder="placeholder"
         v-model="modelVal"
         :options="mergeConfig.options"
-        :aria-describedby="ariaDescribedby"
         :name="mergeConfig.name"
         :size="mergeConfig.size"
         :stacked="mergeConfig.stacked"
       ></b-form-checkbox-group>
-    </b-form-group>
   </div>
   <div v-else>
     <b-form-checkbox
