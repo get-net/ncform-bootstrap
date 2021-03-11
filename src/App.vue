@@ -97,6 +97,12 @@ export default {
                 errMsg: "yep it is required!" // Error message
               }
             },
+            value: [{
+              $path: {
+                name:"screnn.png",
+                src:"https://gtn.ee/r/Y6Gm2"
+              }
+            }]
           },
           date: {
             type: "date",
@@ -106,6 +112,7 @@ export default {
               placeholder: "dd.mm.yyyy",
               widget: "datepicker",
               widgetConfig: {
+                locale: "ru",
                 showState: true,
                 format: "DD.MM.YYYY",
                 min: new Date(),
@@ -115,10 +122,10 @@ export default {
             rules: {
               required: {
                 value: true,
-                errMsg: "yep it is required!" 
+                errMsg: "yep it is required!"
               }
             },
-            
+            value: "2021-03-23T19:00:00.000Z"
           },
           select: {
             type: "string",

@@ -1,24 +1,43 @@
 <template>
   <div class="ncform-bootstrap-file">
-    <b-form-file
-      :disabled="disabled"
-      :readonly="readonly"
-      :placeholder="placeholder"
-      :hidden="hidden"
-      v-model="modelVal"
-      :class="mergeConfig.class"
-      :drop-placeholder="mergeConfig.drop_placeholder"
-      :multiple="mergeConfig.multiple"
-      :browse-text="$nclang('browse')"
-      :size="mergeConfig.size"
-      :state="mergeConfig.state"
-      :accept="mergeConfig.accept"
-      @input="handleInput"
-      @change="handleChange"
-    ></b-form-file>
-    <b-card v-if="mergeConfig.preview && imageHasSrc">
-      <img id="output" style="max-width:100%" />
-    </b-card>
+    <div v-if="value[0].$path">
+      <b-input-group :class="mergeConfig.class" :size="mergeConfig.size">
+        <b-form-input
+          :disabled="disabled"
+          :readonly="true"
+          :hidden="hidden"
+          :placeholder="placeholder"
+          v-model="value[0].$path.name"
+          autocomplete="off"
+        ></b-form-input>
+        <b-input-group-append>
+          <b-button @click="downloadFile">
+            Скачать
+          </b-button>
+        </b-input-group-append>
+      </b-input-group>
+      <b-card v-if="fileIsImg(value[0].$path)">
+        <img id="output" style="max-width:100%" :src="value[0].$path.src" />
+      </b-card>
+    </div>
+    <div v-else>
+      <b-form-file
+        :disabled="disabled"
+        :readonly="readonly"
+        :placeholder="placeholder"
+        :hidden="hidden"
+        v-model="modelVal"
+        :class="mergeConfig.class"
+        :drop-placeholder="mergeConfig.drop_placeholder"
+        :multiple="mergeConfig.multiple"
+        :browse-text="$nclang('browse')"
+        :size="mergeConfig.size"
+        :state="mergeConfig.state"
+        :accept="mergeConfig.accept"
+        @input="handleInput"
+        @change="handleChange"
+      ></b-form-file>
+    </div>
   </div>
 </template>
 
@@ -47,6 +66,7 @@ export default {
   watch: {
     modelVal(val) {
       if (val) {
+        console.log(val);
         let output = document.getElementById("output");
         output.src = URL.createObjectURL(val[0]);
         output.onload = function() {
@@ -79,13 +99,21 @@ export default {
         }
       }
     },
-    handleChange(val) {
-      let output = document.getElementById("output");
-      this.imageHasSrc = true;
-      output.src = URL.createObjectURL(val.target.files[0]);
-      output.onload = function() {
-        URL.revokeObjectURL(output.src);
-      };
+    downloadFile() {
+      window.location.href = this.value[0].$path.src;
+    },
+    getFileExtension(name) {
+      let nameSplit = name.split(".");
+      let extension = nameSplit.pop();
+      return extension;
+    },
+    fileIsImg(path) {
+      let ext = this.getFileExtension(path.name);
+      if (ext === "png" || ext === "jpg" || ext === "png") {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 };

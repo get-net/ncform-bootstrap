@@ -42,6 +42,7 @@
         :min="mergeConfig.min"
         :max="mergeConfig.max"
         :state="mergeConfig.state"
+        @context="onContext"
       ></b-form-datepicker>
     </div>
   </div>
@@ -68,22 +69,15 @@ export default {
         min: null,
         max: null,
         state: null,
-        date_format_options: null,
         format: "YYYY-MM-DD",
-        allowInput: false
+        allowInput: true
       }
     };
   },
   methods: {
     _processModelVal(newVal) {
-      console.log(this.mergeConfig.valueFormat);
-      return `${
-        newVal
-          ? this.mergeConfig.valueFormat
-            ? newVal
-            : +new Date(newVal)
-          : ""
-      }`;
+      let m = moment(newVal);
+      return m.toDate().toISOString();
     },
 
     onContext(ctx) {
