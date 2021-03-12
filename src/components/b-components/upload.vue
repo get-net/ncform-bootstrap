@@ -12,7 +12,7 @@
         ></b-form-input>
         <b-input-group-append>
           <b-button @click="downloadFile">
-            Скачать
+            {{$nclang('download')}}
           </b-button>
         </b-input-group-append>
       </b-input-group>
@@ -48,11 +48,13 @@ export default {
   mixins: [ncformCommon.mixins.vue.controlMixin, validateStateMixin],
   i18nData: {
     en: {
-      browse: "Browse"
+      browse: "Browse",
+      download: "Download"
     },
     zh_cn: {},
     ru: {
-      browse: "Выбрать"
+      browse: "Выбрать",
+      download: "Скачать"
     }
   },
   props: {
