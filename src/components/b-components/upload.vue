@@ -1,6 +1,6 @@
 <template>
   <div class="ncform-bootstrap-file">
-    <div v-if="value[0].$path">
+    <div v-if="value.length >= 1">
       <b-input-group :class="mergeConfig.class" :size="mergeConfig.size">
         <b-form-input
           :disabled="disabled"
