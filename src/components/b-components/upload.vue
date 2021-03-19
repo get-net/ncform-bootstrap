@@ -1,6 +1,6 @@
 <template>
   <div class="ncform-bootstrap-file">
-    <div v-if="value.length >= 1">
+    <div v-if="fileLoaded">
       <b-input-group :class="mergeConfig.class" :size="mergeConfig.size">
         <b-form-input
           :disabled="disabled"
@@ -12,7 +12,7 @@
         ></b-form-input>
         <b-input-group-append>
           <b-button @click="downloadFile">
-            {{$nclang('download')}}
+            {{ $nclang("download") }}
           </b-button>
         </b-input-group-append>
       </b-input-group>
@@ -35,7 +35,6 @@
         :state="mergeConfig.state"
         :accept="mergeConfig.accept"
         @input="handleInput"
-        @change="handleChange"
       ></b-form-file>
     </div>
   </div>
@@ -59,21 +58,9 @@ export default {
   },
   props: {
     value: {
-      type: Array,
+      type: [Array,String],
       default() {
         return [];
-      }
-    }
-  },
-  watch: {
-    modelVal(val) {
-      if (val) {
-        console.log(val);
-        let output = document.getElementById("output");
-        output.src = URL.createObjectURL(val[0]);
-        output.onload = function() {
-          URL.revokeObjectURL(output.src);
-        };
       }
     }
   },
@@ -91,6 +78,17 @@ export default {
       },
       imageHasSrc: false
     };
+  },
+  computed: {
+    fileLoaded() {
+      if (this.value.length === 1) {
+        console.log(this.value[0]);
+        if (this.value[0].$path !== "") {
+          return true;
+        }
+      }
+      return false;
+    }
   },
   methods: {
     handleInput(val) {
@@ -113,9 +111,8 @@ export default {
       let ext = this.getFileExtension(path.name);
       if (ext === "png" || ext === "jpg" || ext === "png") {
         return true;
-      } else {
-        return false;
       }
+      return false;
     }
   }
 };
