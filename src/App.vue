@@ -1,9 +1,9 @@
 <template>
   <div>
     <ncform
-      :form-schema="formSchema2"
+      :form-schema="formSchema"
       form-name="your-form-name"
-      v-model="formSchema2.value"
+      v-model="formSchema.value"
       @submit="submit()"
     ></ncform>
     <hr />
@@ -149,7 +149,9 @@ export default {
               label: "textarea",
               placeholder: "your text here",
               widget: "textarea",
-              widgetConfig: {}
+              widgetConfig: {
+                showState: true
+              }
             }
           },
           bool: {

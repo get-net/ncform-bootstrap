@@ -28,8 +28,9 @@
 
 <script>
 import ncformCommon from "@ncform/ncform-common";
+import validateStateMixin from "@/mixins/validateStateMixin";
 export default {
-  mixins: [ncformCommon.mixins.vue.controlMixin],
+  mixins: [ncformCommon.mixins.vue.controlMixin, validateStateMixin],
   data() {
     return {
       inputVal: "",
