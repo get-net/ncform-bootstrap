@@ -1,9 +1,9 @@
 <template>
   <div>
     <ncform
-      :form-schema="formSchema"
+      :form-schema="formSchema2"
       form-name="your-form-name"
-      v-model="formSchema.value"
+      v-model="formSchema2.value"
       @submit="submit()"
     ></ncform>
     <hr />
@@ -12,8 +12,6 @@
 </template>
 
 <script>
-// import NcformBootstrapFile from "./components/b-components/file";
-
 export default {
   data() {
     return {
@@ -97,12 +95,7 @@ export default {
                 errMsg: "yep it is required!" // Error message
               }
             },
-            value: [{
-              $path: {
-                name:"screnn.png",
-                src:"https://gtn.ee/r/Y6Gm2"
-              }
-            }]
+            value: ""
           },
           date: {
             type: "date",
@@ -241,6 +234,36 @@ export default {
           }
         },
         value: {}
+      },
+      formSchema2: {
+        type: "object",
+        properties: [
+          {
+            type: "number", //may be integer
+            ui: {
+              columns: 3,
+              label: "numeric input",
+              placeholder: "Last name",
+              widgetConfig: {
+                type: "number",
+                showState: true
+              }
+            },
+            rules: {
+              maximum: {
+                value: 60,
+                errMsg: "too much"
+              },
+              minimum: {
+                value: 3,
+                errMsg: "too smll"
+              }
+            },
+            value: 21
+          },
+        ],
+        
+        value: {0: "123"}
       }
     };
   },

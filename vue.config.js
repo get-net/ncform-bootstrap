@@ -1,5 +1,6 @@
 const merge = require("webpack-merge");
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
 module.exports = merge(
   {
     lintOnSave: false,
@@ -16,6 +17,12 @@ module.exports = merge(
               commonjs2: "@ncform/ncform-common",
               commonjs: "@ncform/ncform-common",
               amd: "ncformCommon"
+            }
+          },
+          plugins: [new BundleAnalyzerPlugin()],
+          resolve: {
+            alias: {
+              moment: 'moment/src/moment'
             }
           }
         }

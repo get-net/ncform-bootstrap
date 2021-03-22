@@ -51,7 +51,7 @@
 <script>
 import ncformCommon from "@ncform/ncform-common";
 import validateStateMixin from "@/mixins/validateStateMixin";
-import moment from "moment";
+import moment from 'moment/src/moment'
 export default {
   mixins: [ncformCommon.mixins.vue.controlMixin, validateStateMixin],
   props: {
