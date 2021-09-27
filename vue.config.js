@@ -1,6 +1,7 @@
 const merge = require("webpack-merge");
 module.exports = merge(
   {
+    productionSourceMap: false,
     lintOnSave: false,
     css: {
       extract: false
