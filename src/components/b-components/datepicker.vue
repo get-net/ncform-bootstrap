@@ -1,56 +1,42 @@
 <template>
   <div>
-    <div v-if="mergeConfig.allowInput">
-      <b-input-group :class="mergeConfig.class" :size="mergeConfig.size">
-        <b-form-input
-          :disabled="disabled"
-          :readonly="readonly"
-          :hidden="hidden"
-          :placeholder="placeholder"
-          v-model="inputVal"
-          autocomplete="off"
-          :state="mergeConfig.state"
-          @input="onInput"
-        ></b-form-input>
-        <b-input-group-append>
-          <b-form-datepicker
-            v-model="modelVal"
-            button-only
-            right
-            :disabled="disabled"
-            :readonly="readonly"
-            :hidden="hidden"
-            :locale="mergeConfig.locale"
-            :min="mergeConfig.min"
-            :max="mergeConfig.max"
-            :state="mergeConfig.state"
-            @context="onContext"
-          ></b-form-datepicker>
-        </b-input-group-append>
-      </b-input-group>
-    </div>
-    <div v-else>
-      <b-form-datepicker
-        :disabled="disabled"
-        :readonly="readonly"
-        :placeholder="placeholder"
-        :hidden="hidden"
-        v-model="modelVal"
-        :class="mergeConfig.class"
-        :size="mergeConfig.size"
-        :locale="mergeConfig.locale"
-        :min="mergeConfig.min"
-        :max="mergeConfig.max"
+    <DatePicker
         :state="mergeConfig.state"
+        :popover="popoverOnRight"
+        :min-date="mergeConfig.min"
+        :max-date="mergeConfig.max"
+        :locale="mergeConfig.locale"
         @context="onContext"
-      ></b-form-datepicker>
-    </div>
+        :size="mergeConfig.size"
+        v-model="modelVal"
+    >
+      <template v-slot="{ inputValue, togglePopover }">
+        <b-input-group :class="mergeConfig.class" :size="mergeConfig.size" class="flex">
+          <b-form-input
+              :value="inputValue"
+              @change="onChange"
+              :class="mergeConfig.class"
+              v-if="mergeConfig.allowInput"
+              :disabled="mergeConfig.readonly"
+              :state="mergeConfig.state"
+              ref="dateInput"
+          />
+          <b-input-group-append>
+            <b-button @click="togglePopover" >
+              <BIconCalendar />
+            </b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </template>
+    </DatePicker>
   </div>
 </template>
 
 <script>
 import ncformCommon from "@ncform/ncform-common";
 import validateStateMixin from "@/mixins/validateStateMixin";
+import Calendar from 'v-calendar/lib/components/calendar.umd'
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 import moment from 'moment/src/moment'
 export default {
   mixins: [ncformCommon.mixins.vue.controlMixin, validateStateMixin],
@@ -62,6 +48,7 @@ export default {
   },
   data() {
     return {
+      popoverOnRight: { placement: "bottom-end" },
       inputVal: "",
       defaultConfig: {
         size: "md",
@@ -70,31 +57,48 @@ export default {
         max: null,
         state: null,
         format: "YYYY-MM-DD",
-        allowInput: true
+        allowInput: true,
+        readonly: true
       }
     };
+  },
+  components: {
+    Calendar,
+    DatePicker
   },
   methods: {
     _processModelVal(newVal) {
       let m = moment(newVal);
       return m.toDate().toISOString();
     },
-
     onContext(ctx) {
       if (ctx.selectedDate) {
         let m = moment(ctx.selectedDate);
         this.inputVal = m.format(this.mergeConfig.format);
       }
     },
+    onChange() {
+      let inputData = this.$refs.dateInput.$data;
+      let m = moment(inputData.vModelValue, this.mergeConfig.format);
+      let ofRightLength = inputData.vModelValue.length === 10;
+      let inRange = m.toDate() > this.mergeConfig.min &&
+                    m.toDate() < this.mergeConfig.max
 
-    onInput() {
-      if (this.inputVal.length === 10) {
-        let m = moment(this.inputVal, this.mergeConfig.format);
-        if (
-          m.toDate() > this.mergeConfig.min ||
-          m.toDate() < this.mergeConfig.max
-        ) {
-          this.modelVal = m.toDate();
+      let formattedModelValue = moment(this.modelVal)
+          .format(this.mergeConfig.format);
+
+      if (ofRightLength && inRange) {
+        this.modelVal = m.toDate();
+
+      } else {
+        if (this.modelVal) {
+          this.inputVal = formattedModelValue;
+          inputData.localValue = formattedModelValue;
+          inputData.vModelValue = formattedModelValue;
+        } else {
+          this.inputVal = "";
+          inputData.localValue = "";
+          inputData.vModelValue = "";
         }
       }
     }
