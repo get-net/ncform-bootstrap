@@ -22,7 +22,7 @@
     "moment": "^2.24.0",
     "v-calendar": "^2.3.2",
     "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11",
+    "vue-template-compiler": "^2.6.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
