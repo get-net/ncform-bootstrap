@@ -1,6 +1,6 @@
 {
   "name": "ncform-bootstrap",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/get-net/ncform-bootstrap.git"
@@ -21,7 +21,8 @@
     "core-js": "^2.6.5",
     "moment": "^2.24.0",
     "v-calendar": "^2.3.2",
-    "vue": "^2.6.10"
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.11",
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
